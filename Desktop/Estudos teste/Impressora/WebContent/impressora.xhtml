@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html	xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:p="http://primefaces.org/ui">
+<h:head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title>Contador Mensal</title>
+</h:head>
+<h:body>
+	<h1>Contador Mensal</h1>
+	<p:messages/>
+	<h:form>
+		<h:panelGrid columns="3">
+			<h:outputLabel value="ID:"/>
+			<h:outputLabel value="${alunoMB.alunoAtual.id}"/>
+			<h:outputLabel/>
+			
+			<h:outputLabel value="Patrimonio:"/>
+			<h:inputText	value="${alunoMB.alunoAtual.ra}"
+							id="txtRA"
+							validatorMessage="O Patrimonio deve ser preenchido com 5 numeros">
+				<f:validateRegex pattern="(^[0-9]{5})"/>
+			</h:inputText>
+			<p:message for="txtRA"/>
+			
+			<h:outputLabel value="Modelo da Impressora:"/>
+			<h:inputText 	id="txtNome"
+							value="${alunoMB.alunoAtual.nome}"/>
+			<p:message for="txtNome"/>
+			
+			<h:outputLabel value="Contador:"/>
+			<h:inputText	id="txtIdade"
+							value="${alunoMB.alunoAtual.idade}"/>
+			<p:message for="txtIdade"/>
+			
+			<h:outputLabel value="Data da inspeção:"/>
+			<p:calendar	mode="inline"	pattern="dd/MM/yyyy"
+						id="txtNascimento"	
+						value="${alunoMB.alunoAtual.nascimento}" />
+			<p:message for="txtNascimento"/>
+			
+			<h:commandButton	value="Adicionar"	rendered="${alunoMB.alunoAtual.id == 0}"
+								action="${alunoMB.adicionar()}"/>
+			<h:commandButton	value="Atualizar"	rendered="${alunoMB.alunoAtual.id != 0}"
+								action="${alunoMB.atualizar()}"/>								
+			<h:commandButton	value="Pesquisar"
+								action="${alunoMB.pesquisar()}"/>
+			<h:selectOneRadio value="${alunoMB.selecao}">
+				<f:selectItem itemValue="todos" itemLabel="Todos"/>
+				<f:selectItem itemValue="pornome" itemLabel="Por Modelo"/>
+				<f:selectItem itemValue="porra" itemLabel="Por Patrimonio"/>
+			</h:selectOneRadio>
+		
+		</h:panelGrid>
+		
+		<p:dataTable	value="${alunoMB.alunos}"	
+						var="aluno"	paginator="true">
+			<p:column headerText="ID">${aluno.id}</p:column>
+			<p:column headerText="Patrimonio">${aluno.ra}</p:column>
+			<p:column headerText="Modelo">${aluno.nome}</p:column>
+			<p:column headerText="Contador">${aluno.idade}</p:column>
+			<p:column headerText="Data da Inspecao">${aluno.nascimento}</p:column>
+			<p:column headerText="Ação">
+				<h:commandButton value="Remover" action="${alunoMB.remover(aluno.id)}"/>
+			</p:column>
+		</p:dataTable>
+	</h:form>
+</h:body>
+</html>
